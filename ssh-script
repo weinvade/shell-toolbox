@@ -26,7 +26,7 @@ if command -v systemctl >/dev/null; then
      fi
 fi
 
-#just a warning for ubuntu/debian users if auth.log not found
+#just a warning if auth.log not found
  if [ ! -f /var/log/auth.log ]; then
      echo "[!]WARNING: auth.log file not found."
 fi
