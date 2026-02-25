@@ -4,7 +4,7 @@
 #checks for root perms
 if [[ $EUID -ne 0 ]]; then 
    echo "[!] run as root in order to run the script"
-     exit 0
+     exit 1
 fi
 
 
@@ -22,7 +22,7 @@ if command -v systemctl >/dev/null; then
      if ! systemctl is-active --quiet ssh 2>/dev/null &&
         ! systemctl is-active --quiet sshd 2>/dev/null; then
                 echo "[!] SSH service not running"
-             exit 2
+             exit 1
      fi
 fi
 
