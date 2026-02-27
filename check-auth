@@ -1,0 +1,9 @@
+#!/usr/bin/env bash 
+
+
+
+    [[ ! -f /var/log/auth.log ]] && { echo "File: auth.log not found."; exit 1; }
+           PASSWORD=$(grep "Failed password" /var/log/auth.log | wc -l)
+               SUDO=$(grep "authentication failure" /var/log/auth.log | wc -l) 
+         echo "[+] $PASSWORD password attempts, $SUDO sudo failures."
+
