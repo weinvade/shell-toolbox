@@ -1,2 +1,2 @@
 # shell-toolbox
-Collection of reusable Bash scripts
+Collection of reusable shell scripts
