@@ -1,0 +1,12 @@
+#!/bin/sh
+
+
+  [ "$(id -u)" -ne 0  ] && { echo "sudo privileges required."; exit 1; }
+         SHELL="$1"
+         [ -z "$SHELL" ] && { echo "No user input."; exit 1; }
+         ERROR_CODE() { echo "[!] ERROR: command did not execute."; exit 1; }
+         command -v "$SHELL" >/dev/null 2>&1 || { echo "$SHELL is not installed" ; exit 1 ; }
+         chsh "$USER" -s /bin/"$SHELL"  || ERROR_CODE
+
+         echo "success.."
+
