@@ -1,23 +1,11 @@
 #!/usr/bin/env bash 
 
 
-#checks for root perms
-if [[ $EUID -ne 0 ]]; then 
-   echo "[!] run as root in order to run the script"
-     exit 1
-fi
 
 
+ [[ $EUID -ne 0 ]] && { echo "[!] run as root in order to run the script"; exit 1; }
+ command -v sshd >/dev/null  || { echo "[!] sshd not installed"; exit 1; }
 
-
-#checks if sshd is installed
-if ! command -v sshd >/dev/null; then
-   echo "[!] sshd not installed"
-   exit 1
-fi
-
-
-#checks if the SSH service is running
 if command -v systemctl >/dev/null; then
      if ! systemctl is-active --quiet ssh 2>/dev/null &&
         ! systemctl is-active --quiet sshd 2>/dev/null; then
@@ -26,21 +14,16 @@ if command -v systemctl >/dev/null; then
      fi
 fi
 
-#just a warning if auth.log not found
- if [ ! -f /var/log/auth.log ]; then
-     echo "[!]WARNING: auth.log file not found."
-fi
+  [[ ! -f /var/log/auth.log ]] && { echo "[!]WARNING: auth.log file not found."; }
+
 
 
 #catching SSH connections
 while true; do
 
 LIST_IPS=$(ss -tnp | awk '/sshd/ {print $5}' | cut -d: -f1 | sort -u | sed 's/^/ - /')
-     
-        if [[ -z "$LIST_IPS" ]]; then
-          LIST_IPS="No active SSH connections"
-        fi
-
+      [[ -z "$LIST_IPS" ]] && { LIST_IPS="No active SSH connections"; }
+   
      echo "________________________________"  
      echo "[*] ACTIVE CONNECTIONS VIA  SSH:"
       printf "%s\n" "$LIST_IPS"
